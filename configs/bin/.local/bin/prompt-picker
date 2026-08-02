@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+PROMPTS_DIR="$HOME/.config/prompts"
+
+selection=$(find "$PROMPTS_DIR" -maxdepth 1 -type f -name '*.md' -printf '%f\n' | sed 's/\.md$//' | sort | walker --dmenu -p "Prompt:")
+
+if [ -n "$selection" ]; then
+    file="$PROMPTS_DIR/$selection.md"
+    if [ -f "$file" ]; then
+        wl-copy < "$file"
+        sleep 0.1
+        hyprctl dispatch sendshortcut "SHIFT, Insert, activewindow"
+    fi
+fi

@@ -39,3 +39,4 @@ Running `./stow.sh` with no arguments still links every package in `configs/`.
 - Powerlevel10k is installed by `modules/zsh-setup.sh`. If `~/.p10k.zsh` is missing, run `p10k configure` once after opening a new shell.
 - Neovim config remains untouched so you can keep Omarchy defaults.
 - COSMIC/Pop-era scripts and archived Hyprland configs were removed when moving to Omarchy; the live Hyprland setup is managed by omarchy itself.
+- `prompts` and `bin` packages hold the prompt library (`~/.config/prompts`) and small scripts (`~/.local/bin/prompt-picker`).
