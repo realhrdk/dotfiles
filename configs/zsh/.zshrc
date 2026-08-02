@@ -1,3 +1,8 @@
+if [ -z "${ZSH_VERSION:-}" ]; then
+  echo "This file is for zsh. Run 'zsh' first, then 'source ~/.zshrc'." >&2
+  return 0 2>/dev/null || exit 0
+fi
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -118,7 +123,6 @@ alias ll='ls -la'
 alias gs='git status'
 alias jupyter='jupyter notebook'
 
-alias g5='sudo apt update && sudo apt upgrade -y'
 # opencode
 export PATH=/home/hrdk/.opencode/bin:$PATH
 alias ytmp3='yt-dlp -f "ba/b" -x --audio-format mp3 --audio-quality 0'
@@ -132,10 +136,9 @@ alias ytmp4='yt-dlp -f "bv*[ext=mp4]+ba[ext=m4a]/b[ext=mp4] / bv*+ba/b" --merge-
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 alias lg='lazygit'
-alias sai='sudo apt install -y'
 export PATH="$HOME/.npm-global/bin:$PATH"
 
-. "$HOME/.local/bin/env"
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
@@ -143,8 +146,15 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # OpenClaw Completion
-source "/home/hrdk/.openclaw/completions/openclaw.zsh"
+[ -f "$HOME/.openclaw/completions/openclaw.zsh" ] && source "$HOME/.openclaw/completions/openclaw.zsh"
 export XDG_DATA_DIRS="/usr/local/share:$XDG_DATA_DIRS"
 export EDITOR=nvim
 export VISUAL=nvim
-export DISPLAY=:1
+
+if command -v pacman >/dev/null 2>&1; then
+  alias sysup='sudo pacman -Syu'
+  alias pkgin='sudo pacman -S --needed'
+elif command -v apt >/dev/null 2>&1; then
+  alias sysup='sudo apt update && sudo apt upgrade -y'
+  alias pkgin='sudo apt install -y'
+fi
