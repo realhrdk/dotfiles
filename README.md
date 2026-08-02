@@ -1,42 +1,47 @@
 # Dotfiles
 
-Selective setup source for Arch / Omarchy. Stow only the configs you want, e.g. `zsh` and `tmux`.
+Recovery source for an Arch / Omarchy machine. Everything managed by Omarchy itself (Hyprland, waybar, tmux, Neovim/LazyVim, alacritty, walker, mako, ...) is **not** tracked here — only the pieces that are yours.
 
-## Recommended Setup On Arch / Omarchy
+## Setup On Arch / Omarchy (fresh machine)
 
 ```bash
+# 1. Install Arch, then Omarchy (omarchy provides hyprland, tmux, nvim, alacritty, ...)
+# 2. Clone and link
 cd ~/dotfiles
-./modules/zsh-setup.sh
-sudo pacman -S --needed tmux stow
-./stow.sh zsh tmux git
+sudo pacman -S --needed stow
+./stow.sh
 ```
 
-That gives you:
+That links only what you actually maintain:
 
-- `zsh` with Oh My Zsh
-- `powerlevel10k`
-- `zsh-autosuggestions`
-- `zsh-syntax-highlighting`
-- your tracked `~/.zshrc`
-- your tracked `tmux` config
-- your tracked `git` config
+- `zsh` — your `~/.zshrc` (omarchy-native: arch zsh plugins, starship, aliases)
+- `git` — `~/.gitconfig`, `~/.gitignore_global`
+- `espanso` — text expansion (`@think`, `@math`, `@code`, `@u`, ...)
+- `ruff` — `~/.config/ruff/ruff.toml`
+- `prompts` — prompt library used by the picker
+- `bin` — `~/.local/bin/prompt-picker` (walker + wl-copy; bind it in omarchy keybinds)
+
+## Re-apply these Omarchy-managed tweaks
+
+These are small edits on top of Omarchy defaults, kept out of stow so `omarchy update`/`refresh` can't clobber them and you don't fight the defaults:
+
+- `tmux` (`~/.config/tmux/tmux.conf`): add `bind -n M-Enter split-window -v -c "#{pane_current_path}"` and `bind -n M-S-Enter split-window -h -c "#{pane_current_path}"`, and set `status-position bottom` (default is top)
+- `alacritty` (`~/.config/alacritty/alacritty.toml`): font `JetBrainsMono Nerd Font` (no `Mono` suffix) at size 9, padding 14
 
 ## Selective Stow
 
 `stow.sh` accepts package names, so you can link only what you want:
 
 ```bash
-./stow.sh zsh tmux
-./stow.sh git
+./stow.sh zsh
+./stow.sh git espanso
 ./stow.sh
 ```
 
-Running `./stow.sh` with no arguments still links every package in `configs/`.
+Running `./stow.sh` with no arguments links every package in `configs/`.
 
 ## Notes
 
-- `configs/zsh/.zshrc` is cleaned up to avoid Ubuntu-only aliases on Arch.
-- Powerlevel10k is installed by `modules/zsh-setup.sh`. If `~/.p10k.zsh` is missing, run `p10k configure` once after opening a new shell.
-- Neovim config remains untouched so you can keep Omarchy defaults.
-- COSMIC/Pop-era scripts and archived Hyprland configs were removed when moving to Omarchy; the live Hyprland setup is managed by omarchy itself.
-- `prompts` and `bin` packages hold the prompt library (`~/.config/prompts`) and small scripts (`~/.local/bin/prompt-picker`).
+- `~/.zshrc` is a symlink into this repo — edit it here.
+- `~/.config/prompts` and `~/.local/bin/prompt-picker` are symlinks here too.
+- COSMIC/Pop-era scripts, the old oh-my-zsh setup, and the pre-Omarchy nvim/tmux/alacritty configs were removed when moving to Omarchy.

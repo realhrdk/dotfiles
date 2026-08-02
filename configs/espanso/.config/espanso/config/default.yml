@@ -1,5 +1,9 @@
+# Specify your layout (usually "us")
+keyboard_layout:
+  layout: "us"
 # espanso configuration file
-
+backend: inject
+search_shortcut: CTRL+SHIFT+E
 # yaml-language-server: $schema=https://raw.githubusercontent.com/espanso/espanso/dev/schemas/config.schema.json
 
 # For a complete introduction, visit the official docs at: https://espanso.org/docs/
@@ -19,6 +23,7 @@
 # toggle_key: ALT
 # You can also disable the toggle key completely with
 # toggle_key: OFF
+
 
 # --- Injection Backend
 
